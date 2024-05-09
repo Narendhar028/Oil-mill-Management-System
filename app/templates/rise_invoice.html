@@ -1,0 +1,41 @@
+{%include 'db_vendor.html'%}
+<div class="container" style="margin:0 auto;padding-top:100px;width:50%;">
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+        <h5 class="card-header">Rise Invoice</h5>
+        <div class="card-body">
+            {% if messages %}
+                {% for i in messages %}
+                    <div class="alert alert-success">{{i}}</div>
+                {% endfor %}
+            {% endif %}
+            <form  id="basicform" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="form-group">
+                    <label for="inputUserName">Total Amount</label>
+                    <input id="inputUserName" type="text" readonly value="{{request.GET.total}}" name="total_price" required="required"  class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputUserName">Rise Amount</label>
+                    <input id="inputUserName" type="text"  name="rise_price" required="required"  class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="inputUserName">Expected Date</label>
+                    <input id="inputUserName" type="date" name="edate" required="required"  class="form-control">
+                </div>
+               
+                <div class="row">
+                    <div class="col-sm-6 pl-0">
+                    </div>
+                    <div class="col-sm-6 pl-0">
+                        <p class="text-right">
+                            <button type="submit" class="btn btn-space btn-primary">Rise Invoice</button>
+                            <button type="reset" class="btn btn-space btn-secondary">Cancel</button>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

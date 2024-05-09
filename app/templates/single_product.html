@@ -1,0 +1,197 @@
+{% include 'db_head.html' %}
+{% load mathfilters %}
+{% load static %}<!-- Start All Title Box -->
+<link rel="stylesheet" href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}" />
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/3.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span>Product Details</span></p>
+            <h1 class="mb-0 bread">Product Details</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated" style="padding:30px 0 0 !important;">
+	<span class="subheading">Our Products</span>
+	<h2 class="mb-4">Product Details</h2>
+	
+  </div>
+
+	
+	<section class="ftco-section">
+    	<div class="container">
+    		<div class="row">
+			{% for i in row %}
+    			<div class="col-lg-6 mb-5 ftco-animate">
+    				<a href="/media/{{i.image}}" style="width:100%;" class="image-popup"><img src="/media/{{i.image}}" class="img-responsive img-thumbnail" alt="Colorlib Template"></a>
+    			</div>
+    			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+    				<h3>{{i.name}}</h3>
+    				
+    				<p class="price"><span>Rs {{i.price}}</span></p>
+    				<p>{{i.note}}
+						</p>
+						<p>Category Name: {{i.category}} </p>
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<div class="form-group d-flex">
+		              <div class="select-wrap">
+	                 
+	                <h5>Features: {{i.option}}</h5>
+	                </div>
+		            </div>
+							</div>
+							<div class="w-100"></div>
+							<div class="input-group col-md-6 d-flex mb-3">
+	             	<span class="input-group-btn mr-2">
+	                	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
+	                   <i class="ion-ios-remove"></i>
+	                	</button>
+	            		</span>
+	             	<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+	             	<span class="input-group-btn ml-2">
+	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+	                     <i class="ion-ios-add"></i>
+	                 </button>
+	             	</span>
+	          	</div>
+	          	<div class="w-100"></div>
+	          	<div class="col-md-12">
+	          		
+	          	</div>
+          	</div>
+          	<p><a href="{% url 'add_to_cart' pk=i.id %}" class="btn btn-black py-3 px-5">Add to Cart</a></p>
+    			</div>
+				{% endfor %}
+    		</div>
+    	</div>
+    </section>
+	
+	
+	
+    <!-- Start Shop Detail  -->
+    <div class="shop-detail-box-main">
+        <div class="container">
+            <div class="row">
+			
+				 {% if messages %}
+						  {% for i in messages %}
+							<div class="alert alert-danger">{{i}}</div>
+						  {% endfor %}
+						{% endif %}
+						
+						<div class="blog-comment-box" style="background:#DDD;padding:20px;width:100%;margin-bottom:30px;">
+							<h3 class="pull-left" style="float:left;">{{tot.comment__count}} Comment</h3>
+							<div class="pull-right" style="font-weight:bold;font-size:14px;float:right;">
+										 Average Rating: {% with a=tot.comment__count %}
+										  {% with b=cnt.rank__sum %}
+										  
+											 {{ b|div:a |floatformat}}
+										{% endwith %}
+										{% endwith %}
+									</div>
+							<div style="clear:both;"></div>
+							{% for i in comment_detail %}
+							<div class="comment-item" >
+								<div class="comment-item-left" style="float:left;width:90px;">
+									<img src="{% static 'images/blank-user.jpg' %}" alt="" style="width:100%;margin-right:100px;">
+								</div>
+								<div class="comment-item-right" style="float:right;width:87%;">
+									<div style="text-transform:Capitalize;">
+										<a href="#"> {{i.user_id.username}}</a>
+									</div>
+									<div class="des-l">
+										<p>{{i.comment}}</p>
+										<p style="font-size:15px;">
+										{% if i.rank == 1 %}
+										Rating: <i style="color:yellow;" class="fa fa-star"></i> </p>
+										{% elif i.rank == 2 %}
+										Rating: <i style="color:yellow;" class="fa fa-star"></i>  <i style="color:yellow;" class="fa fa-star"></i></p>
+										{% elif i.rank == 3 %}
+										Rating: <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i></p>
+										{% elif i.rank == 4 %}
+										Rating: <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i><i style="color:yellow;" class="fa fa-star"></i></p>
+										{% elif i.rank == 5 %}
+										Rating: <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i><i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i> <i style="color:yellow;" class="fa fa-star"></i></p>
+										{% endif %}
+									</div>
+									
+								</div>
+								<div style="clear:both;"></div>
+							</div>
+							 {% endfor %}
+						</div>
+						
+						
+						{% if request.session.user_id %}
+						<div class="comment-respond-box">
+							<h3>Leave Your Feedback </h3>
+							<div class="comment-respond-form">
+								<form class="row" method="post">{% csrf_token %}
+									<div class="col-lg-12 col-md-12 col-sm-12">
+									
+									<div class="form-group">
+									
+								  
+										  <label class="control-label col-sm-2">Rank</label>
+										 <input type="checkbox" value="1" name="rank"> 1
+										<input type="checkbox" value="2" name="rank"> 2
+										<input type="checkbox" value="3" name="rank"> 3
+										<input type="checkbox" value="4" name="rank"> 4
+										<input type="checkbox" value="5" name="rank"> 5
+									   
+									  </div>
+									  </div>
+									  <div class="col-lg-12 col-md-12 col-sm-12">
+										<div class="form-group">
+											<textarea style="border:1px solid #DDD;" class="form-control" id="textarea_com" placeholder="Your Message" rows="5" name="comment"></textarea>
+										</div>
+									</div>
+									<div class="col-lg-12 col-md-12 col-sm-12">
+										<input type="submit" class="btn btn-black py-3 px-5" value="Give Feedback"><br><br>
+									</div>
+								</form>
+							</div>
+						</div>
+						  {% endif %}
+					</div>
+				</div>
+            </div>
+{% include 'footer.html' %}
+<script>
+		$(document).ready(function(){
+
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		            
+		            $('#quantity').val(quantity + 1);
+
+		          
+		            // Increment
+		        
+		    });
+
+		     $('.quantity-left-minus').click(function(e){
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		      
+		            // Increment
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+		    
+		});
+	</script>

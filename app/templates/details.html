@@ -1,0 +1,74 @@
+{%include 'header.html'%}
+{% load mathfilters %}
+{% load static %}
+
+<div class="container" style="margin:0 auto;padding-top:100px;">
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >
+     <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Ordered Clothes</h4>
+                  
+				    {% for i in product_details %}
+				  {% if forloop.last %}
+				  <p class="font-weight-bold">Customer Name:{{i.user_id.username}}</p>
+				  <p>
+                         {{i.user_id.email}}
+                        </p>
+						<p>
+                         {{i.user_id.mobile}}
+                        </p>
+					<h5><b>Delivery Address</b></h4>
+				  <address>
+                        <p class="font-weight-bold">{{i.user_id.address}}</p>
+                        <p>
+                         {{i.user_id.country}}
+                        </p>
+                        <p>
+                           {{i.user_id.city}}
+                        </p>
+                        <p>
+                          {{i.user_id.zip}}
+                        </p>
+                   </address>
+				  {% endif %}
+				  {% endfor %}
+                  <div class="table-responsive">
+                    <table class="table table-striped" style="background:blue;color: #FFF">
+                    <thead >
+                            <th>Order Id</th>
+                            <th>Ordered Date</th>
+							<th>Product Name</th>
+							<th>Price</th>
+							<th>Image</th>
+							<th>Quantity</th>
+							<th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background:#FFF;color: #000">
+                        {% for i in product_details %}
+						<tr>
+							<td>{{i.book_id}}</td>
+							<td>{{i.date}}</td>
+							<td>{{i.product_id.name}}</td>
+							<td>{{i.product_id.price}}</td>
+							<td><img src="/media/{{i.product_id.image}}" width="50px" height="50px"></td>
+							<td>{{i.quantity}}</td>
+							<td><b style="padding-right:10px;">Rs: {{i.tot_price}}</b></td>
+							
+						</tr>
+					{% empty %}
+						<tr>
+							<td colspan="8" class="text-center bg-primary">No Items in Purchased <a href="{% url 'home' %}" class="btn btn-warning btn-xs" style="color: #000 !important;"><i class="fa fa-edit"></i> Item </a></td>
+						</tr>
+						{% endfor %}
+                    </tbody>
+                </table>
+	                <div align="right" style="margin:20px 50px 0 0;color: green;">
+					<h4>Total: <b><i>Rs{{ tot.tot_price__sum }}</i></b></h4></div>
+										
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

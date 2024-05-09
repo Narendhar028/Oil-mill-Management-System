@@ -1,0 +1,95 @@
+       {% include 'db_head.html' %} {% load static %}<!-- Start All Title Box -->
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/1.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span>Cart</span></p>
+            <h1 class="mb-0 bread">Cart</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated" style="padding:30px 0 0 !important;">
+	<span class="subheading">Our Products</span>
+	<h2 class="mb-4">View Cart </h2>
+	
+  </div>
+
+    
+	
+	 <section class="ftco-section ftco-cart" style="padding: 30px 0;">
+			<div class="container">
+				<div class="row">
+    			<div class="col-md-12 ftco-animate">
+    				<div class="cart-list">
+	    				<table class="table">
+						    <thead class="thead-primary">
+						      <tr class="text-center">
+							  <th>&nbsp;</th>
+						        <th>Sno</th>
+						        <th>Images</th>
+						        <th>Product name</th>
+						        <th>Price</th>
+						        <th>Quantity</th>
+						        <th>Total</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+							{% for i in product_details %}
+						      <tr class="text-center">
+							  
+						        <td class="product-remove"><a href="{% url 'remove_item' pk=i.id %}"><span class="ion-ios-close"></span></a></td>
+						        <td>{{forloop.counter}}</td>
+						        <td class="image-prod"><div class="img" style="background-image:url(/media/{{i.product_id.image}});"></div></td>
+						        
+						        <td class="product-name">
+						        	<h3>{{i.product_id.name}}</h3>
+						        	
+						        </td>
+						        
+						        <td class="price">{{i.product_id.price}}</td>
+						         <td class="price">{{i.quantity}}</td>
+						        
+						        
+						        <td class="total">Rs: {{i.tot_price}}</td>
+						      </tr><!-- END TR-->
+	
+		{% empty %}
+						<tr>
+							<td colspan="8" class="text-center bg-danger">No Items in Basket <a href="{% url 'products' %}" class="btn btn-warning btn-xs" style="color: #000 !important;"><i class="fa fa-edit"></i> Item </a></td>
+						</tr>
+					{% endfor %}	     
+						    </tbody>
+						  </table>
+					  </div>
+    			</div>
+    		</div>
+			{% if product_details %}
+    		<div class="row justify-content-end">
+    			
+    			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+    				<div class="cart-total mb-3">
+    					<h3>Cart Totals</h3>
+    					<p class="d-flex">
+    						<span>Subtotal</span>
+    						<span>Rs {{ tot.tot_price__sum }}</span>
+    					</p>
+    					<p class="d-flex">
+    						<span>Delivery</span>
+    						<span>Free</span>
+    					</p>
+    					<hr>
+    					<p class="d-flex total-price">
+    						<span>Total</span>
+    						<span>Rs {{ tot.tot_price__sum }}</span>
+    					</p>
+    				</div>
+    				<p><a href="{% url 'purchase' %}?order_id=oid_{{r_num}}&tot={{ tot.tot_price__sum }}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+    			</div>
+    		</div>
+			{% endif %}
+			</div>
+		</section>
+	
+    <!-- End Cart -->
+	  {% include 'footer.html' %}
